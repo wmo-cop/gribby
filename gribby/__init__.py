@@ -30,10 +30,7 @@
 from datetime import datetime, time
 from io import StringIO
 import logging
-from struct import pack
 import sys
-
-from gribby import section_0, section_11
 
 __version__ = '0.1.0'
 
@@ -100,43 +97,11 @@ class GRIB(object):
         self.sections = []
         """sections composing a GRIB message"""
 
-        self.sections = [
-            section_0.Section0(),
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            section_11.Section11()
-        ]
+        self.sections = [None] * 12
 
-    def _write(self):
-        """write to binary IO stream"""
-
-        LOGGER.debug('Writing Section 0')
-        self.ioobj.write(pack('<4s', bytes(self.sections[0].signature,
-                                           'utf8')))
-        self.ioobj.write(pack('<2x'))
-        self.ioobj.write(pack('<i',
-                         self.sections[0].master_tables_version_number))
-        self.ioobj.write(pack('<i', self.sections[0].edition))
-
-        self.ioobj.write(pack('<4s', b''))
-        LOGGER.debug('Writing Section 11')
-        self.ioobj.write(pack('<4s', bytes(self.sections[11].signature,
-                                           'utf8')))
-
-        self.ioobj.seek(0, 2)
-        message_length = self.ioobj.tell()
-
-        LOGGER.debug('Writing Section 0 total message length')
-        self.ioobj.seek(8)
-        self.ioobj.write(pack('>Q', message_length))
+    def write(self):
+        for s in [self.sections[0], self.sections[11]]:
+            self.ioobj.write(s.get_bytes())
 
     def __repr__(self):
         return '<GRIB (filename: {})>'.format(self.filename)
@@ -183,11 +148,3 @@ def loads(buf):
 
     s = StringIO(buf)
     return GRIB(s)
-
-
-if __name__ == '__main':
-    with open('file_.grib3', 'wb') as fh:
-        g = GRIB(fh)
-        g._write()
-
-        print(g.__dict__)

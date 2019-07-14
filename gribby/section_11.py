@@ -27,11 +27,19 @@
 #
 # =================================================================
 
+import logging
+import ctypes
 
-class Section11(object):
-    """GRIB Section 11 - End Section"""
+from gribby.helpers import StructHelper
 
-    def __init__(self, ):
-        """initializer"""
+LOGGER = logging.getLogger(__name__)
 
-        self.signature = '7777'
+
+class Section11(ctypes.LittleEndianStructure, StructHelper):
+    """Section 11 – End section"""
+
+    _pack_ = 1
+
+    _fields_ = [
+        ('signature', ctypes.c_char * 4)
+    ]

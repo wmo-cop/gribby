@@ -27,15 +27,22 @@
 #
 # =================================================================
 
+import ctypes
+import logging
 
-class Section0(object):
-    """GRIB Section 0 - Indicator Section"""
+from gribby.helpers import StructHelper
 
-    def __init__(self, ):
-        """initializer"""
+LOGGER = logging.getLogger(__name__)
 
-        self.signature = 'GRIB'
-        self.reserved = None
-        self.master_tables_version_number = 255
-        self.edition = 3
-        self.total_length = None
+
+class Section0(ctypes.LittleEndianStructure, StructHelper):
+    """Section 0 - Indicator Section"""
+
+    _pack_ = 1
+
+    _fields_ = [
+        ('signature', ctypes.c_char * 4),
+        ('reserved', ctypes.c_char * 2),
+        ('edition', ctypes.c_uint8),
+        ('length', ctypes.c_uint64)
+    ]
