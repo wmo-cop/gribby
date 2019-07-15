@@ -27,6 +27,7 @@
 #
 # =================================================================
 
+import ctypes
 from datetime import datetime, time
 from io import StringIO
 import logging
@@ -97,11 +98,48 @@ class GRIB(object):
         self.sections = []
         """sections composing a GRIB message"""
 
-        self.sections = [None] * 12
+        self.sections = []
+
+    def validate(self):
+        """
+        Validates a `gribby.GRIB` object
+
+        :raises: `gribby.InvalidDataError`
+
+        :returns: void
+        """
+
+        if len(self.sections) < 12:
+            raise InvalidDataError('not enough sections')
 
     def write(self):
-        for s in [self.sections[0], self.sections[11]]:
-            self.ioobj.write(s.get_bytes())
+        """
+        Write GRIB data to file handle or BytesIO
+
+        :returns: void
+        """
+
+        total_length = 0
+
+        if self.ioobj is None:
+            msg = 'file handle required'
+            LOGGER.error(msg)
+            raise RuntimeError(msg)
+
+        LOGGER.debug('calculating total length')
+        for section in self.sections:
+            print(section)
+            total_length += ctypes.sizeof(section)
+
+        LOGGER.debug('total length: {}'.format(total_length))
+        self.sections[0].length = total_length
+
+        for counter, section in enumerate(self.sections):
+            if 0 < counter < 12:
+                section.number_of_section = counter
+            if section is None:
+                raise InvalidDataError('Section {} malformed'.format(section))
+            self.ioobj.write(section.get_bytes())
 
     def __repr__(self):
         return '<GRIB (filename: {})>'.format(self.filename)

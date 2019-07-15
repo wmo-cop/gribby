@@ -86,8 +86,24 @@ class StructHelper(object):
         https://stackoverflow.com/q/1825715
         """
 
-        # Works for either Python2 or Python3
-        return bytearray(self)
+        return bytes(self)
 
-        # Python 3 only! Don't try this in Python2, where bytes() == str()
-        # return bytes(self)
+
+class BaseStructure(ctypes.Structure):
+    """
+    https://stackoverflow.com/a/25892189
+    """
+
+    def __init__(self, **kwargs):
+        """
+        Ctypes.Structure with integrated default values.
+
+        :param kwargs: values different to defaults
+        :type kwargs: dict
+        """
+
+        values = type(self)._defaults_.copy()
+        for (key, val) in kwargs.items():
+            values[key] = val
+
+        super().__init__(**values)            # Python 3 syntax

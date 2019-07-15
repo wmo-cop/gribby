@@ -35,15 +35,23 @@ from gribby.helpers import StructHelper
 LOGGER = logging.getLogger(__name__)
 
 
-class Section0(ctypes.LittleEndianStructure, StructHelper):
-    """Section 0 - Indicator Section"""
+class Section2(ctypes.LittleEndianStructure, StructHelper):
+    """Section 2 – Repetitions and Index Section"""
 
     _pack_ = 1
 
     _fields_ = [
-        ('signature', ctypes.c_char * 4),
-        ('reserved', ctypes.c_char * 2),
-        ('master_tables_version_number', ctypes.c_uint8),
-        ('edition', ctypes.c_uint8),
-        ('length', ctypes.c_uint64)
+        ('length', ctypes.c_uint32),
+        ('number_of_section', ctypes.c_uint8),
+        ('total_number_of_repetitions', ctypes.c_uint16),
+        ('distinct_section3_greater_than_7_bytes ', ctypes.c_uint16),
+        ('distinct_section4_greater_than_7_bytes ', ctypes.c_uint16),
+        ('distinct_section5_greater_than_7_bytes ', ctypes.c_uint16),
+        ('distinct_section6_greater_than_7_bytes ', ctypes.c_uint16),
+        ('distinct_section7_greater_than_7_bytes ', ctypes.c_uint16),
+        ('distinct_section8_greater_than_7_bytes ', ctypes.c_uint16),
+        ('distinct_section9_greater_than_7_bytes ', ctypes.c_uint16),
+        ('index_template_number', ctypes.c_uint16),
+        ('length_of_index_template_number', ctypes.c_uint16),
+        ('index_template', ctypes.c_wchar_p)
     ]

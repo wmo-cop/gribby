@@ -35,15 +35,16 @@ from gribby.helpers import StructHelper
 LOGGER = logging.getLogger(__name__)
 
 
-class Section0(ctypes.LittleEndianStructure, StructHelper):
-    """Section 0 - Indicator Section"""
+class Section8(ctypes.LittleEndianStructure, StructHelper):
+    """Section 8 – Data Representation Section"""
 
     _pack_ = 1
 
     _fields_ = [
-        ('signature', ctypes.c_char * 4),
-        ('reserved', ctypes.c_char * 2),
-        ('master_tables_version_number', ctypes.c_uint8),
-        ('edition', ctypes.c_uint8),
-        ('length', ctypes.c_uint64)
+        ('length', ctypes.c_uint32),
+        ('number_of_section', ctypes.c_uint8),
+        ('section_unique_identifier', ctypes.c_uint16),
+        ('number_of_data_values_encoded_in_section_10', ctypes.c_uint32),
+        ('data_representation_template_number', ctypes.c_uint16),
+        ('data_representation_template', ctypes.c_wchar_p)
     ]

@@ -35,15 +35,23 @@ from gribby.helpers import StructHelper
 LOGGER = logging.getLogger(__name__)
 
 
-class Section0(ctypes.LittleEndianStructure, StructHelper):
-    """Section 0 - Indicator Section"""
+class Section3(ctypes.LittleEndianStructure, StructHelper):
+    """Section 3 – Time Domain Section"""
 
     _pack_ = 1
 
     _fields_ = [
-        ('signature', ctypes.c_char * 4),
-        ('reserved', ctypes.c_char * 2),
-        ('master_tables_version_number', ctypes.c_uint8),
-        ('edition', ctypes.c_uint8),
-        ('length', ctypes.c_uint64)
+        ('length', ctypes.c_uint32),
+        ('number_of_section', ctypes.c_uint8),
+        ('section_unique_identifier', ctypes.c_uint16),
+        ('significance_of_reference_date_and_time', ctypes.c_uint8),
+        ('type_of_calendar', ctypes.c_uint8),
+        ('year', ctypes.c_uint32),
+        ('month', ctypes.c_uint8),
+        ('day', ctypes.c_uint8),
+        ('hour', ctypes.c_uint8),
+        ('minute', ctypes.c_uint8),
+        ('second', ctypes.c_uint8),
+        ('time_domain_template_number', ctypes.c_uint16),
+        ('time_domain_template', ctypes.c_wchar_p)
     ]

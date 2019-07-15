@@ -35,15 +35,23 @@ from gribby.helpers import StructHelper
 LOGGER = logging.getLogger(__name__)
 
 
-class Section0(ctypes.LittleEndianStructure, StructHelper):
-    """Section 0 - Indicator Section"""
+class Section1(ctypes.LittleEndianStructure, StructHelper):
+    """Section 1 - Originator Section"""
 
     _pack_ = 1
 
     _fields_ = [
-        ('signature', ctypes.c_char * 4),
-        ('reserved', ctypes.c_char * 2),
-        ('master_tables_version_number', ctypes.c_uint8),
-        ('edition', ctypes.c_uint8),
-        ('length', ctypes.c_uint64)
+        ('length', ctypes.c_uint32),
+        ('number_of_section', ctypes.c_uint8),
+        ('centre', ctypes.c_uint16),
+        ('subcentre', ctypes.c_uint16),
+        ('local_tables_version_number', ctypes.c_uint8),
+        ('identification_of_project', ctypes.c_uint8),
+        ('production_status', ctypes.c_uint8),
+        ('originator_local_template_number', ctypes.c_uint16),
+        ('length_of_originator_local_template', ctypes.c_uint16),
+        ('originator_local_template', ctypes.c_wchar_p),
+        ('project_local_template_number', ctypes.c_uint16),
+        ('length_of_project_local_template', ctypes.c_uint16),
+        ('project_local_template', ctypes.c_wchar_p)
     ]
