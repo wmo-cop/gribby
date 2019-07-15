@@ -94,7 +94,7 @@ class GRIB(object):
 
         LOGGER.debug('calculating total length')
         for section in self.sections:
-            print(section)
+            LOGGER.debug(section)
             total_length += ctypes.sizeof(section)
 
         LOGGER.debug('total length: {}'.format(total_length))
@@ -103,8 +103,7 @@ class GRIB(object):
         for counter, section in enumerate(self.sections):
             if 0 < counter < 12:
                 section.number_of_section = counter
-            if section is None:
-                raise InvalidDataError('Section {} malformed'.format(section))
+            LOGGER.debug('Writing Section {}'.format(counter))
             self.ioobj.write(section.get_bytes())
 
     def __repr__(self):
