@@ -28,7 +28,6 @@
 # =================================================================
 
 import ctypes
-from datetime import datetime, time
 from io import StringIO
 import logging
 import sys
@@ -38,39 +37,6 @@ __version__ = '0.1.0'
 LOGGER = logging.getLogger(__name__)
 
 LOGGER.debug('System byte order: {}'.format(sys.byteorder))
-
-
-def _get_value_type(field, value):
-    """
-    derive true type from data value
-    :param field: fieldname of value
-    :param value: value to be evaluated
-    :returns: value with appropriate typing
-    """
-
-    field2 = field.lower()
-    value2 = None
-
-    if value == '':  # empty
-        return None
-
-    if field2 == 'date':
-        value2 = datetime.strptime(value, '%Y-%m-%d').date()
-    elif field2 == 'time':
-        hour, minute, second = [int(v) for v in value.split(':')]
-        value2 = time(hour, minute, second)
-    else:
-        try:
-            if '.' in value:  # float?
-                value2 = float(value)
-            elif len(value) > 1 and value.startswith('0'):
-                value2 = value
-            else:  # int?
-                value2 = int(value)
-        except ValueError:  # string (default)?
-            value2 = value
-
-    return value2
 
 
 class GRIB(object):
