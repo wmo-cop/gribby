@@ -1,8 +1,6 @@
 
 from gribby import GRIB
-from gribby.section_0 import Section0
-from gribby.section_1 import Section1
-from gribby.section_11 import Section11
+from gribby import sections
 
 
 oc = {
@@ -15,11 +13,11 @@ oc = {
     'length_of_originator_local_template': 0
 }
 
-s0 = Section0(b'GRIB', b'  ', 0, 3, 12345)
+s0 = sections.Section0(b'GRIB', b'  ', 0, 3, 12345)
 
-s1 = Section1(**oc)
+s1 = sections.Section1(**oc)
 
-s11 = Section11(b'7777')
+s11 = sections.Section11(b'7777')
 
 with open('jjj.grib3', 'wb') as fh:
     g = GRIB(fh)
