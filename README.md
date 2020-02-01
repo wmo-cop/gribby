@@ -4,7 +4,7 @@
 
 ## Overview
 
-gribby is a pure Python package implementing WMO FM 92 GRIB Edition 3
+gribby is a pure Python package implementing [WMO FM 92 GRIB Edition 3](https://www.wmo.int/pages/prog/www/WMOCodes/WMO306_vI2/FM92-16-GRIB/FM-92-16_GRIB-edition-3_CBS-16.pdf)
 
 ## Installation
 
